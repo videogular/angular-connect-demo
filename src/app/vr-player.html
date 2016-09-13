@@ -22,15 +22,26 @@
             <img id="ringImg" src="assets/images/ring1.png" width="512" height="512">
         </a-assets>
 
+        
+        <a-text 
+            *ngFor="let txt of currentVideo.texts; let i=index"
+            [id]="txt.id"
+            [attr.depth]="10 + i"
+            [attr.position]="txt.position"
+            [attr.rotation]="txt.rotation"
+            [attr.scale]="txt.scale" 
+            [attr.text]="txt.text">
+        </a-text>
+
         <a-image
-            *ngFor="let hotspot of currentVideo.hotspots; let i=index"
-            [id]="hotspot.id"
-            [attr.depth]="2 + i"
-            [attr.position]="hotspot.point"
-            [attr.rotation]="hotspot.rotation"
+            *ngFor="let door of currentVideo.doors; let i=index"
+            [id]="door.id"
+            [attr.depth]="100 + i"
+            [attr.position]="door.position"
+            [attr.rotation]="door.rotation"
             src="#ringImg"
             scale="0 0 0"
-            (mouseenter)="onMouseEnter($event, hotspot)"
+            (mouseenter)="onMouseEnter($event, door)"
             (mouseleave)="onMouseLeave($event)"
             animation__fadein="startEvents: vgStartFadeInAnimation; property: scale; dur: 2000; to: 1 1 1"
             animation__scale="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: scale; dur: 2000; from: 1 1 1; to: 2 2 2"

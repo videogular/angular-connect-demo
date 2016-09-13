@@ -50,6 +50,7 @@
     "@ngstarter/systemjs-extension": "1.0.0-rc.4",
     "aframe": "^0.3.1",
     "aframe-animation-component": "^3.0.1",
+    "aframe-bmfont-text-component": "^0.1.4",
     "bootstrap-sass": "^3.3.7",
     "codelyzer": "0.0.28",
     "core-js": "^2.4.1",

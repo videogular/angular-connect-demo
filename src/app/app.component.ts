@@ -2,16 +2,23 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { VgFullscreenAPI, VgAPI } from 'videogular2/core'; 
 
 
-interface HotSpot {
+interface AframeEntity {
     id: string;
-    point: string;
-    goto: string;
+    position: string;
     rotation: string;
+}
+interface VrDoor extends AframeEntity {
+    goto: string;
+}
+interface VrText extends AframeEntity {
+    text: string;
+    scale: string;
 }
 interface Video {
     id: string;
     url: string;
-    hotspots: Array<HotSpot>;
+    doors: Array<VrDoor>;
+    texts: Array<VrText>;
 }
 
 @Component({
@@ -28,41 +35,48 @@ export class VRPlayer implements OnInit {
         {
             id: 'v0',
             url: 'http://static.videogular.com/assets/videos/vr-route-0.mp4',
-            hotspots: [
-                {id: 'h1', point: '-3 2 -10', rotation: '0 0 0', goto: 'v1'}
-            ]
+            doors: [
+                {id: 'd1', position: '-3 2 -10', rotation: '0 0 0', goto: 'v1'}
+            ],
+            texts: []
         },
         {
             id: 'v1',
             url: 'http://static.videogular.com/assets/videos/vr-route-1.mp4',
-            hotspots: [
-                {id: 'h1', point: '-15 -3 -18', rotation: '0 -180 0', goto: 'v0'},
-                {id: 'h2', point: '8 1 9', rotation: '0 -130 0', goto: 'v2' }
+            doors: [
+                {id: 'd1', position: '-15 -3 -18', rotation: '0 -180 0', goto: 'v0'},
+                {id: 'd2', position: '8 1 9', rotation: '0 -130 0', goto: 'v2' }
+            ],
+            texts: [
+                {id: 'd1', text: 'Estany de St. Maurici', position: '3 1 -2', rotation: '0 310 0', scale: '1 1 1'}
             ]
         },
         {
             id: 'v2',
             url: 'http://static.videogular.com/assets/videos/vr-route-2.mp4',
-            hotspots: [
-                {id: 'h1', point: '-1 1 -8', rotation: '0 -30 0', goto: 'v1'},
-                {id: 'h2', point: '0 2 7', rotation: '0 180 0', goto: 'v3'}
-            ]
+            doors: [
+                {id: 'd1', position: '-1 1 -8', rotation: '0 -30 0', goto: 'v1'},
+                {id: 'd2', position: '0 2 7', rotation: '0 180 0', goto: 'v3'}
+            ],
+            texts: []
         },
         {
             id: 'v3',
             url: 'http://static.videogular.com/assets/videos/vr-route-3.mp4',
-            hotspots: [
-                {id: 'h1', point: '-5 2 7', rotation: '0 130 0', goto: 'v2'},
-                {id: 'h2', point: '3 4 7', rotation: '0 210 0', goto: 'v4'}
-            ]
+            doors: [
+                {id: 'd1', position: '-5 2 7', rotation: '0 130 0', goto: 'v2'},
+                {id: 'd2', position: '3 4 7', rotation: '0 210 0', goto: 'v4'}
+            ],
+            texts: []
         },
         {
             id: 'v4',
             url: 'http://static.videogular.com/assets/videos/vr-route-4.mp4',
-            hotspots: [
-                {id: 'h1', point: '2 1 10', rotation: '0 180 0', goto: 'v3'},
-                {id: 'h2', point: '3 2 -10', rotation: '0 180 0', goto: 'v0'}
-            ]
+            doors: [
+                {id: 'd1', position: '2 1 10', rotation: '0 180 0', goto: 'v3'},
+                {id: 'd2', position: '3 2 -10', rotation: '0 180 0', goto: 'v0'}
+            ],
+            texts: []
         }
     ];
 
@@ -104,11 +118,11 @@ export class VRPlayer implements OnInit {
         }
     }
 
-    onMouseEnter($event, hotSpot:HotSpot) {
+    onMouseEnter($event, door:VrDoor) {
         $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
 
         this.timeout = setTimeout( () => {
-            this.currentVideo = this.videos.filter( v => v.id === hotSpot.goto )[0];
+            this.currentVideo = this.videos.filter( v => v.id === door.goto )[0];
         }, 2000 );
     }
 
