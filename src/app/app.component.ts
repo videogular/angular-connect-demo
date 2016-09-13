@@ -23,6 +23,7 @@ export class VRPlayer implements OnInit {
     aframe: any;
     currentVideo: Video;
     spinning: boolean;
+    timeout: number;
     videos: Array<Video> = [
         {
             id: 'v0',
@@ -83,15 +84,21 @@ export class VRPlayer implements OnInit {
         }
     }
 
-    onMouseEnter(hotSpot:HotSpot) {
-        if (!this.spinning) {
-            this.spinning = true;
-            (document.querySelector('#' + hotSpot.id) as any).emit('startSpinning' + hotSpot.id);
+    onMouseEnter($event, hotSpot:HotSpot) {
+        $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
 
-            setTimeout( () => {
-                this.currentVideo = this.videos.filter( v => v.id === hotSpot.goto )[0];
-                this.spinning = false;
-            }, 2000 );
-        }
+        this.timeout = setTimeout( () => {
+            this.currentVideo = this.videos.filter( v => v.id === hotSpot.goto )[0];
+        }, 2000 );
+    }
+
+    onMouseLeave($event) {
+        $event.target.dispatchEvent(new CustomEvent('vgPauseAnimation'));
+
+        // Send start and pause again to reset the scale and opacity
+        $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
+        $event.target.dispatchEvent(new CustomEvent('vgPauseAnimation'));
+
+        clearTimeout(this.timeout);
     }
 }

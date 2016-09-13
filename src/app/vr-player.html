@@ -29,9 +29,10 @@
             [attr.position]="hotspot.point"
             [attr.rotation]="hotspot.rotation"
             src="#ringImg"
-            (mouseenter)="onMouseEnter(hotspot)"
-            animation__scale="property: scale; dur: 1000; easing: easeInSine; loop: true; to: 2 2 2"
-            animation__visibility="property: material.opacity; dur: 1000; easing: easeInSine; loop: true; to: 0">
+            (mouseenter)="onMouseEnter($event, hotspot)"
+            (mouseleave)="onMouseLeave($event)"
+            animation__scale="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: scale; dur: 2000; to: 2 2 2"
+            animation__visibility="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: material.opacity; dur: 2000; to: 0">
         </a-image>
 
         <a-videosphere src="#video"></a-videosphere>
