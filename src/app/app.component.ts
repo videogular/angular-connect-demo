@@ -22,7 +22,6 @@ export class VRPlayer implements OnInit {
     elem: any;
     aframe: any;
     currentVideo: Video;
-    spinning: boolean;
     timeout: number;
     videos: Array<Video> = [
         {
@@ -69,7 +68,6 @@ export class VRPlayer implements OnInit {
     constructor(ref: ElementRef) {
         this.elem = ref.nativeElement;
         this.currentVideo = this.videos[0];
-        this.spinning = false;
     }
 
     ngOnInit() {
