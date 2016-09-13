@@ -1,4 +1,4 @@
-<vg-player>
+<vg-player (onPlayerReady)="onPlayerReady($event)">
     <vg-controls>
         <vg-play-pause></vg-play-pause>
 
@@ -16,7 +16,7 @@
         <vg-fullscreen></vg-fullscreen>
     </vg-controls>
 
-    <a-scene vr-mode-ui="enabled: false">
+    <a-scene vr-mode-ui="enabled: false" (renderstart)="onAframeRenderStart()">
         <a-assets>
             <video [src]="currentVideo.url" vg-media id="video" preload="auto" crossorigin="anonymous" loop></video>
             <img id="ringImg" src="assets/images/ring1.png" width="512" height="512">
@@ -29,10 +29,12 @@
             [attr.position]="hotspot.point"
             [attr.rotation]="hotspot.rotation"
             src="#ringImg"
+            scale="0 0 0"
             (mouseenter)="onMouseEnter($event, hotspot)"
             (mouseleave)="onMouseLeave($event)"
-            animation__scale="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: scale; dur: 2000; to: 2 2 2"
-            animation__visibility="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: material.opacity; dur: 2000; to: 0">
+            animation__fadein="startEvents: vgStartFadeInAnimation; property: scale; dur: 2000; to: 1 1 1"
+            animation__scale="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: scale; dur: 2000; from: 1 1 1; to: 2 2 2"
+            animation__visibility="startEvents: vgStartAnimation; pauseEvents: vgPauseAnimation; property: material.opacity; dur: 2000; from: 1; to: 0">
         </a-image>
 
         <a-videosphere src="#video"></a-videosphere>

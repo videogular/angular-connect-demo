@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { VgFullscreenAPI } from 'videogular2/core';
+import { VgFullscreenAPI, VgAPI } from 'videogular2/core'; 
 
 
 interface HotSpot {
@@ -23,6 +23,7 @@ export class VRPlayer implements OnInit {
     aframe: any;
     currentVideo: Video;
     timeout: number;
+    vgApi:VgAPI;
     videos: Array<Video> = [
         {
             id: 'v0',
@@ -73,6 +74,27 @@ export class VRPlayer implements OnInit {
     ngOnInit() {
         this.aframe = this.elem.querySelector('a-scene');
         VgFullscreenAPI.onChangeFullscreen.subscribe(this.onChangeFullscreen.bind(this));
+    }
+
+    onAframeRenderStart() {
+        const media = this.vgApi.getDefaultMedia();
+        if(media.isMetadataLoaded) {
+            this.displayDoors();
+        }
+    }
+
+    onPlayerReady(api:VgAPI) {
+        this.vgApi = api;
+        const media = api.getDefaultMedia();
+        if(media.isMetadataLoaded) {
+            this.displayDoors();
+        }
+        media.subscriptions.loadedMetadata.subscribe(this.displayDoors.bind(this));
+    }
+
+    displayDoors() {
+        Array.from(document.querySelectorAll('a-image'))
+            .forEach(item => item.dispatchEvent(new CustomEvent('vgStartFadeInAnimation')));
     }
 
     onChangeFullscreen(fsState) {
