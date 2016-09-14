@@ -13,12 +13,23 @@ interface VrDoor extends AframeEntity {
 interface VrText extends AframeEntity {
     text: string;
     scale: string;
+    opaAnim: string;
+    posAnim: string;
+}
+interface VrTextPlane extends AframeEntity {
+    position: string;
+    rotation: string;
+    target: string;
+    width: number;
+    height: number;
+    isShown: boolean;
 }
 interface Video {
     id: string;
     url: string;
     doors: Array<VrDoor>;
     texts: Array<VrText>;
+    textPlanes: Array<VrTextPlane>;
 }
 
 @Component({
@@ -38,7 +49,8 @@ export class VRPlayer implements OnInit {
             doors: [
                 {id: 'd1', position: '-3 2 -10', rotation: '0 0 0', goto: 'v1'}
             ],
-            texts: []
+            texts: [],
+            textPlanes: []
         },
         {
             id: 'v1',
@@ -48,7 +60,18 @@ export class VRPlayer implements OnInit {
                 {id: 'd2', position: '8 1 9', rotation: '0 -130 0', goto: 'v2' }
             ],
             texts: [
-                {id: 'd1', text: 'Estany de St. Maurici', position: '3 1 -2', rotation: '0 310 0', scale: '1 1 1'}
+                {
+                    id: 't1',
+                    text: 'St. Maurici lake (1910 m)',
+                    position: '6 0 -4',
+                    rotation: '0 -30 0',
+                    scale: '2 2 2',
+                    opaAnim: 'startEvents: t1; property: opacity; dur: 300; from: 0; to: 1; elasticity: 1000',
+                    posAnim: 'startEvents: t1; property: position; dur: 500; from: 6 0 -4; to: 6 0.3 -4; elasticity: 1000'
+                }
+            ],
+            textPlanes: [
+                {id: 'p1', position: '17 0 -7', rotation: '-90 -30 0', width: 20, height: 20, target: 't1', isShown: false}
             ]
         },
         {
@@ -58,7 +81,8 @@ export class VRPlayer implements OnInit {
                 {id: 'd1', position: '-1 1 -8', rotation: '0 -30 0', goto: 'v1'},
                 {id: 'd2', position: '0 2 7', rotation: '0 180 0', goto: 'v3'}
             ],
-            texts: []
+            texts: [],
+            textPlanes: []
         },
         {
             id: 'v3',
@@ -67,7 +91,8 @@ export class VRPlayer implements OnInit {
                 {id: 'd1', position: '-5 2 7', rotation: '0 130 0', goto: 'v2'},
                 {id: 'd2', position: '3 4 7', rotation: '0 210 0', goto: 'v4'}
             ],
-            texts: []
+            texts: [],
+            textPlanes: []
         },
         {
             id: 'v4',
@@ -76,7 +101,20 @@ export class VRPlayer implements OnInit {
                 {id: 'd1', position: '2 1 10', rotation: '0 180 0', goto: 'v3'},
                 {id: 'd2', position: '3 2 -10', rotation: '0 180 0', goto: 'v0'}
             ],
-            texts: []
+            texts: [
+                {
+                    id: 't1',
+                    text: 'Ratera lake (2370 m)',
+                    position: '9 0 -7',
+                    rotation: '0 -90 0',
+                    scale: '2 2 2',
+                    opaAnim: 'startEvents: t1; property: opacity; dur: 300; from: 0; to: 1; elasticity: 1000',
+                    posAnim: 'startEvents: t1; property: position; dur: 500; from: 9 0 -7; to: 9 0.6 -7; elasticity: 1000'
+                }
+            ],
+            textPlanes: [
+                {id: 'p1', position: '17 0 -7', rotation: '-90 0 0', width: 20, height: 40, target: 't1', isShown: false}
+            ]
         }
     ];
 
@@ -115,6 +153,15 @@ export class VRPlayer implements OnInit {
         if (fsState) {
             this.aframe.setStereoRenderer();
             this.aframe.addState('vr-mode');
+        }
+    }
+
+    onMouseEnterPlane(plane:VrTextPlane) {
+        if (!plane.isShown) {
+            let target = document.querySelector('#' + plane.target);
+            console.log(plane, target);
+            target.dispatchEvent(new CustomEvent(plane.target));
+            plane.isShown = true;
         }
     }
 

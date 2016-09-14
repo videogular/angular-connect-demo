@@ -22,15 +22,29 @@
             <img id="ringImg" src="assets/images/ring1.png" width="512" height="512">
         </a-assets>
 
+        <a-plane
+                *ngFor="let txtPlane of currentVideo.textPlanes; let i=index"
+                [attr.depth]="i"
+                [attr.rotation]="txtPlane.rotation"
+                [attr.position]="txtPlane.position"
+                [attr.width]="txtPlane.width"
+                [attr.height]="txtPlane.height"
+                (mouseenter)="onMouseEnterPlane(txtPlane)"
+                opacity="0">
+        </a-plane>
         
-        <a-text 
+        <a-text
             *ngFor="let txt of currentVideo.texts; let i=index"
+            color="#FFF"
             [id]="txt.id"
             [attr.depth]="10 + i"
             [attr.position]="txt.position"
             [attr.rotation]="txt.rotation"
-            [attr.scale]="txt.scale" 
-            [attr.text]="txt.text">
+            [attr.scale]="txt.scale"
+            [attr.text]="txt.text"
+            [attr.animation__visibility]="txt.opaAnim"
+            [attr.animation__position]="txt.posAnim"
+            opacity="0">
         </a-text>
 
         <a-image
