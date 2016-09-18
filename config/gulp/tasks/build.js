@@ -19,7 +19,7 @@ gulp.task('build', function (done) {
 
 /* Concat and minify/uglify all css, js, and copy fonts */
 gulp.task('build-assets', function (done) {
-    runSequence('clean-build', ['sass', 'fonts'], function () {
+    runSequence('clean-build', ['sass', 'fonts', 'data'], function () {
         gulp.src(config.app + '**/*.html', {
             base: config.app
         })
@@ -61,6 +61,14 @@ gulp.task('fonts', function () {
         'node_modules/videogular2/fonts/*.*'
     ])
     .pipe(gulp.dest(config.build.fonts));
+});
+
+/* Copy vtt files */
+gulp.task('data', function () {
+    gulp.src(config.assets + 'data/**/*.*', {
+        base: config.assets + 'data/'
+    })
+    .pipe(gulp.dest(config.build.path + '/data'));
 });
 
 gulp.task('env', function () {

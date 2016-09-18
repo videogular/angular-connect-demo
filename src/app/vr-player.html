@@ -1,24 +1,21 @@
 <vg-player (onPlayerReady)="onPlayerReady($event)">
-    <vg-controls>
-        <vg-play-pause></vg-play-pause>
+    <div class="title" [ngClass]="{ 'hide': hideTitle }">{{ cuePointData.title }}</div>
 
-        <vg-time-display property="current" format="mm:ss"></vg-time-display>
+    <vg-scrub-bar style="bottom: 0;">
+        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
+        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
+        <vg-scrub-bar-cue-points [cuePoints]="metadataTrack.cues"></vg-scrub-bar-cue-points>
+    </vg-scrub-bar>
 
-        <vg-scrub-bar>
-            <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-            <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-        </vg-scrub-bar>
-
-        <vg-time-display property="left" format="mm:ss"></vg-time-display>
-
-        <vg-mute></vg-mute>
-
-        <vg-fullscreen></vg-fullscreen>
-    </vg-controls>
-
-    <a-scene vr-mode-ui="enabled: false" (renderstart)="onAframeRenderStart()">
+    <a-scene vr-mode-ui="enabled: true" (renderstart)="onAframeRenderStart()">
         <a-assets>
-            <video [src]="currentVideo.url" vg-media id="video" preload="auto" crossorigin="anonymous" loop></video>
+            <video [src]="currentVideo.url" vg-media id="video" preload="auto" crossorigin="anonymous" loop>
+                <track [src]="currentVideo.track" kind="metadata" label="Cue Points" default
+                       #metadataTrack
+                       vgCuePoints
+                       (onEnterCuePoint)="onEnterCuePoint($event)"
+                       (onExitCuePoint)="onExitCuePoint($event)">
+            </video>
             <img id="ringImg" src="assets/images/ring1.png" width="512" height="512">
         </a-assets>
 
@@ -65,7 +62,7 @@
         <a-videosphere src="#video"></a-videosphere>
 
         <a-camera>
-            <a-cursor color="#2E3A87"></a-cursor>
+            <a-cursor color="#FFFFFF"></a-cursor>
         </a-camera>
     </a-scene>
 </vg-player>
