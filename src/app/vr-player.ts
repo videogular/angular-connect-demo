@@ -149,11 +149,12 @@ export class VRPlayer implements OnInit {
             .forEach(item => item.dispatchEvent(new CustomEvent('vgStartFadeInAnimation')));
     }
 
-    // TODO: Fullscreen stopped working with aframe 0.3.0
     onChangeFullscreen(fsState) {
         if (fsState) {
-            this.aframe.setStereoRenderer();
-            this.aframe.addState('vr-mode');
+            this.aframe.addFullScreenStyles();
+        }
+        else {
+            this.aframe.removeFullScreenStyles();
         }
     }
 

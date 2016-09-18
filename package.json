@@ -1,6 +1,6 @@
 {
   "name": "angular2-starter",
-  "version": "1.0.0-rc.6",
+  "version": "1.0.0",
   "author": "Antony Budianto",
   "description": "Angular 2 Starter with extensible features",
   "main": "src/tmp/app/main.js",
@@ -42,11 +42,11 @@
     "url": "https://github.com/antonybudianto/angular2-starter/issues"
   },
   "dependencies": {
-    "@angular/common": "2.0.0-rc.6",
-    "@angular/compiler": "2.0.0-rc.6",
-    "@angular/core": "2.0.0-rc.6",
-    "@angular/platform-browser": "2.0.0-rc.6",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.6",
+    "@angular/common": "2.0.0",
+    "@angular/compiler": "2.0.0",
+    "@angular/core": "2.0.0",
+    "@angular/platform-browser": "2.0.0",
+    "@angular/platform-browser-dynamic": "2.0.0",
     "@ngstarter/systemjs-extension": "1.0.0-rc.4",
     "aframe": "^0.3.1",
     "aframe-animation-component": "^3.0.1",
@@ -82,13 +82,13 @@
     "remap-istanbul": "~0.6.4",
     "require-dir": "~0.3.0",
     "run-sequence": "~1.2.2",
-    "rxjs": "5.0.0-beta.11",
+    "rxjs": "5.0.0-beta.12",
     "systemjs": "^0.19.37",
     "tslint": "~3.15.1",
     "typings": "^1.3.2",
-    "videogular2": "0.12.0",
+    "videogular2": "0.13.1",
     "yargs": "^5.0.0",
-    "zone.js": "^0.6.17"
+    "zone.js": "^0.6.21"
   },
   "devDependencies": {
     "browser-sync": "^2.14.0",
