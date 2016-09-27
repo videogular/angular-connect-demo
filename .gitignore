@@ -1,12 +1,4 @@
-env.json
-.vscode
-.idea/
-/node_modules
-/bower_components
-/build
-/report
-/typings
-/src/tmp
-.DS_Store
-/src/assets/styles/*.css
-/src/fonts/
+# Created by .ignore support plugin (hsz.mobi)
+node_modules
+dist
+aot

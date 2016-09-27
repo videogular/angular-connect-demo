@@ -1,5 +1,5 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
-import { VgFullscreenAPI, VgAPI } from 'videogular2/core'; 
+import { VgAPI } from 'videogular2/core';
 
 
 interface IAframeEntity {
@@ -24,7 +24,7 @@ interface IVrTextPlane extends IAframeEntity {
     height: number;
     isShown: boolean;
 }
-interface Video {
+interface IVideo {
     id: string;
     url: string;
     track: string;
@@ -35,34 +35,18 @@ interface Video {
 
 @Component({
     selector: 'vr-player',
-    templateUrl: './app/vr-player.html',
-    styles: [`
-        .title {
-            position: absolute;
-            color: white;
-            z-index: 500;
-            font-size: 60px;
-            background: black;
-            padding: 10px;
-            margin: 10px;
-            opacity: 0.5;
-            font-family: Helvetica, Arial, sans-serif;
-            transition: all 0.5s ease;
-        }
-        .title.hide {
-            opacity: 0;
-        }
-    `]
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss']
 })
 export class VRPlayer implements OnInit {
     elem: any;
     aframe: any;
     cuePointData: any = {};
     hideTitle: boolean = true;
-    currentVideo: Video;
-    timeout: number;
+    currentVideo: IVideo;
+    timeout: any;
     vgApi:VgAPI;
-    videos: Array<Video> = [
+    videos: Array<IVideo> = [
         {
             id: 'v0',
             url: 'http://static.videogular.com/assets/videos/vr-route-0.mp4',
@@ -84,7 +68,7 @@ export class VRPlayer implements OnInit {
             texts: [
                 {
                     id: 't1',
-                    text: 'St. Maurici lake (1910 m)',
+                    text: 'St. Maurici lake',
                     position: '6 0 -4',
                     rotation: '0 -30 0',
                     scale: '2 2 2',
@@ -129,7 +113,7 @@ export class VRPlayer implements OnInit {
             texts: [
                 {
                     id: 't1',
-                    text: 'Ratera lake (2370 m)',
+                    text: 'Ratera lake',
                     position: '9 0 -7',
                     rotation: '0 -90 0',
                     scale: '2 2 2',
@@ -150,7 +134,6 @@ export class VRPlayer implements OnInit {
 
     ngOnInit() {
         this.aframe = this.elem.querySelector('a-scene');
-        //VgFullscreenAPI.onChangeFullscreen.subscribe(this.onChangeFullscreen.bind(this));
     }
 
     onAframeRenderStart() {
@@ -174,15 +157,6 @@ export class VRPlayer implements OnInit {
             .forEach(item => item.dispatchEvent(new CustomEvent('vgStartFadeInAnimation')));
     }
 
-    onChangeFullscreen(fsState) {
-        if (fsState) {
-            this.aframe.addFullScreenStyles();
-        }
-        else {
-            this.aframe.removeFullScreenStyles();
-        }
-    }
-
     onMouseEnterPlane(plane:IVrTextPlane) {
         if (!plane.isShown) {
             let target = document.querySelector('#' + plane.target);
@@ -191,7 +165,7 @@ export class VRPlayer implements OnInit {
         }
     }
 
-    onMouseEnter($event, door:IVrDoor) {
+    onMouseEnter($event:any, door:IVrDoor) {
         $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
 
         this.timeout = setTimeout( () => {
@@ -199,7 +173,7 @@ export class VRPlayer implements OnInit {
         }, 2000 );
     }
 
-    onMouseLeave($event) {
+    onMouseLeave($event:any) {
         $event.target.dispatchEvent(new CustomEvent('vgPauseAnimation'));
 
         // Send start and pause again to reset the scale and opacity
@@ -209,18 +183,17 @@ export class VRPlayer implements OnInit {
         clearTimeout(this.timeout);
     }
 
-    onEnterCuePoint($event) {
+    onEnterCuePoint($event:any) {
         this.hideTitle = false;
         this.cuePointData = JSON.parse($event.text);
     }
 
-    onExitCuePoint($event) {
+    onExitCuePoint($event:any) {
         this.hideTitle = true;
 
         // wait transition
         setTimeout( () => {
             this.cuePointData = {};
         }, 500 );
-
     }
 }
