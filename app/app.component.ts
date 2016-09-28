@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { VgAPI } from 'videogular2/core';
+import {TimerObservable} from "rxjs/observable/TimerObservable";
 
 
 interface IAframeEntity {
@@ -168,9 +169,11 @@ export class VRPlayer implements OnInit {
     onMouseEnter($event:any, door:IVrDoor) {
         $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
 
-        this.timeout = setTimeout( () => {
-            this.currentVideo = this.videos.filter( v => v.id === door.goto )[0];
-        }, 2000 );
+        this.timeout = TimerObservable.create(2000).subscribe(
+            () => {
+                this.currentVideo = this.videos.filter(v => v.id === door.goto)[0];
+            }
+        );
     }
 
     onMouseLeave($event:any) {
@@ -180,7 +183,7 @@ export class VRPlayer implements OnInit {
         $event.target.dispatchEvent(new CustomEvent('vgStartAnimation'));
         $event.target.dispatchEvent(new CustomEvent('vgPauseAnimation'));
 
-        clearTimeout(this.timeout);
+        this.timeout.unsubscribe();
     }
 
     onEnterCuePoint($event:any) {
@@ -192,8 +195,12 @@ export class VRPlayer implements OnInit {
         this.hideTitle = true;
 
         // wait transition
-        setTimeout( () => {
-            this.cuePointData = {};
-        }, 500 );
+        TimerObservable.create(500).subscribe(
+            () => { this.cuePointData = {}; }
+        );
+    }
+
+    ngOnDestroy() {
+        this.timeout.unsubscribe();
     }
 }
